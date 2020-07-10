@@ -23,8 +23,8 @@ class MainTennisActivity : AppCompatActivity() {
         val controller : GameController by viewModels()
         binding.game = model
         game_container.addView(binding.root)
+        controller.createGame()
         player_one_button.setOnClickListener { controller.addPointForPlayerOne() }
         player_two_button.setOnClickListener { controller.addPointForPlayerTwo() }
-
     }
 }

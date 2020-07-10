@@ -6,7 +6,9 @@ class TennisViewModel : RxViewModel() {
     var playerOneScore = DEFAULT_SCORE
     var playerTwoScore = DEFAULT_SCORE
     init {
-        subscribe<String>(playerOneScored,{ score -> playerOneScore = score})
-        subscribe<String>(playerTwoScored,{ score -> playerTwoScore = score})
+        subscribe(playerOneScored,{ score -> playerOneScore = score})
+        subscribe(playerTwoScored,{ score -> playerTwoScore = score})
+        subscribe(playerOneToDeuce, {score -> playerOneScore = score})
+        subscribe(playerTwoToDeuce, {score -> playerTwoScore = score})
     }
 }
