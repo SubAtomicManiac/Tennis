@@ -9,5 +9,4 @@ class CustomTennisGameScore(context: Context, attrs: AttributeSet? = null) : Con
     init {
         inflate(context, R.layout.custom_tennis_game_score, this)
     }
-
 }

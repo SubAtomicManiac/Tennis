@@ -13,13 +13,13 @@ object TennisGameManager {
     private var playerTwoScore = Player(ZERO)
 
     init {
-        EventManager.setDomain(PlayerOneScored, ::updatePlayerOneScore)
-        EventManager.setDomain(PlayerTwoScored, ::updatePlayerTwoScore)
+        playerOneScored.setDomain(::updatePlayerOneScore)
+        playerTwoScored.setDomain(::updatePlayerTwoScore)
     }
 
     private fun updatePlayerOneScore(any: Any?) = updatePlayerScore(playerOneScore,playerTwoScore)
     private fun updatePlayerTwoScore(any: Any?) = updatePlayerScore(playerTwoScore,playerOneScore)
-    private fun updatePlayerScore(player: Player, otherPlayer: Player) : Scores{
+    private fun updatePlayerScore(player: Player, otherPlayer: Player) : String{
         player.score = when (player.score){
             ZERO -> FIFTEEN
             FIFTEEN -> THIRTY
@@ -29,7 +29,7 @@ object TennisGameManager {
             FORTY -> WIN
             WIN -> WIN
         }
-        return player.score
+        return player.score.name
     }
 
 }
