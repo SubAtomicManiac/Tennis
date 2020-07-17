@@ -8,13 +8,3 @@ import androidx.lifecycle.ViewModelProvider
 
 open class BaseController : ViewModel()
 
-@MainThread
-inline fun <reified C : ViewModel> ComponentActivity.controllers(
-    noinline factoryProducer: (() -> ViewModelProvider.Factory)? = null
-): Lazy<C> {
-    val factoryPromise = factoryProducer ?: {
-        defaultViewModelProviderFactory
-    }
-
-    return ViewModelLazy(C::class, { viewModelStore }, factoryPromise)
-}

@@ -8,6 +8,7 @@ import com.example.tennis.R
 import com.example.tennis.viewmodel.TennisViewModel
 import com.example.tennis.controller.GameController
 import com.example.tennis.databinding.CustomTennisGameBinding
+import com.example.tennis.event.resetClick
 import kotlinx.android.synthetic.main.activity_main_tennis.*
 import kotlinx.android.synthetic.main.custom_tennis_game.*
 
@@ -30,8 +31,9 @@ class MainTennisActivity : AppCompatActivity() {
     }
 
     private fun setupClickListeners(){
-        player_one_button.setOnClickListener { controller.addPointForPlayerOne() }
-        player_two_button.setOnClickListener { controller.addPointForPlayerTwo() }
+        button_player_one.setOnClickListener { controller.addPointForPlayerOne() }
+        button_player_two.setOnClickListener { controller.addPointForPlayerTwo() }
+        button_reset.setOnClickListener{ controller.resetGame() }
     }
 
 }

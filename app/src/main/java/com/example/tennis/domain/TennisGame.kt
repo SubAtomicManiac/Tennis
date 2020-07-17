@@ -3,17 +3,18 @@ package com.example.tennis.domain
 import com.example.tennis.domain.entities.GameScore
 import com.example.tennis.domain.entities.Player
 import com.example.tennis.domain.entities.Scores.*
-import com.example.tennis.event.playerOneScored
-import com.example.tennis.event.playerTwoScored
+import com.example.tennis.event.playerOneScoredClick
+import com.example.tennis.event.playerTwoScoredClick
+import com.example.tennis.event.resetClick
 
 
-
-class TennisGame {
+class TennisGame private constructor(){
     private val gameScore = GameScore(Player(ZERO), Player(ZERO))
 
     init {
-        playerOneScored.setDomain(::updatePlayerOneScore)
-        playerTwoScored.setDomain(::updatePlayerTwoScore)
+        playerOneScoredClick.setDomain(::updatePlayerOneScore)
+        playerTwoScoredClick.setDomain(::updatePlayerTwoScore)
+        resetClick.setDomain(::resetScore)
     }
 
     private fun updatePlayerOneScore(viewOut: Any?) = updateScore(gameScore.playerOne, gameScore.playerTwo)
@@ -34,6 +35,12 @@ class TennisGame {
             LOSE -> LOSE.also{otherPlayer.score = WIN }
         }
         return gameScore
+    }
+
+    private fun resetScore(viewOut: Any?) = gameScore.apply{reset()}
+
+    companion object {
+        fun create() = TennisGame()
     }
 
 }

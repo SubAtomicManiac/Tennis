@@ -2,19 +2,23 @@ package com.example.tennis.controller
 
 import com.example.tennis.library.BaseController
 import com.example.tennis.domain.TennisGame
-import com.example.tennis.event.playerOneScored
-import com.example.tennis.event.playerTwoScored
+import com.example.tennis.event.playerOneScoredClick
+import com.example.tennis.event.playerTwoScoredClick
+import com.example.tennis.event.resetClick
 import com.example.tennis.presenter.TennisPresenter
 
 class GameController : BaseController(){
     fun addPointForPlayerOne(){
-        playerOneScored.publishEvent()
+        playerOneScoredClick.publishEvent()
     }
     fun addPointForPlayerTwo(){
-        playerTwoScored.publishEvent()
+        playerTwoScoredClick.publishEvent()
+    }
+    fun resetGame(){
+        resetClick.publishEvent()
     }
     fun createGame(){
-        TennisGame()
-        TennisPresenter()
+        TennisGame.create()
+        TennisPresenter.create()
     }
 }

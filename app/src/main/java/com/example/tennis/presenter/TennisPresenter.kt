@@ -3,14 +3,16 @@ package com.example.tennis.presenter
 import com.example.tennis.domain.entities.GameScore
 import com.example.tennis.domain.entities.Scores
 import com.example.tennis.domain.entities.Scores.*
-import com.example.tennis.event.playerOneScored
-import com.example.tennis.event.playerTwoScored
+import com.example.tennis.event.playerOneScoredClick
+import com.example.tennis.event.playerTwoScoredClick
+import com.example.tennis.event.resetClick
 
-class TennisPresenter {
+class TennisPresenter private constructor(){
 
     init {
-        playerOneScored.setPresenter(::postGameScore)
-        playerTwoScored.setPresenter(::postGameScore)
+        playerOneScoredClick.setPresenter(::postGameScore)
+        playerTwoScoredClick.setPresenter(::postGameScore)
+        resetClick.setPresenter(::postGameScore)
     }
 
     private fun postGameScore(gameScore: GameScore?) = Pair(
@@ -38,5 +40,6 @@ class TennisPresenter {
         const val WIN_DISPLAY = "Win"
         const val LOSE_DISPLAY = "Lose"
         const val ERROR = "Error"
+        fun create() = TennisPresenter()
     }
 }
