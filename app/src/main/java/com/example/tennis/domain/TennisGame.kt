@@ -1,23 +1,25 @@
-package com.example.tennis
+package com.example.tennis.domain
 
-import com.example.tennis.Scores.*
+import com.example.tennis.domain.entities.GameScore
+import com.example.tennis.domain.entities.Player
+import com.example.tennis.domain.entities.Scores.*
+import com.example.tennis.event.playerOneScored
+import com.example.tennis.event.playerTwoScored
 
-enum class Scores {
-    ZERO,FIFTEEN,THIRTY,FORTY,ADVANTAGE,WIN,LOSE
-}
 
-class TennisGameManager {
-    private val gameScore = GameScore(Player(ZERO),Player(ZERO))
+
+class TennisGame {
+    private val gameScore = GameScore(Player(ZERO), Player(ZERO))
 
     init {
         playerOneScored.setDomain(::updatePlayerOneScore)
         playerTwoScored.setDomain(::updatePlayerTwoScore)
     }
 
-    private fun updatePlayerOneScore(any: Any?) = updateScore(gameScore.playerOne, gameScore.playerTwo)
-    private fun updatePlayerTwoScore(any: Any?) = updateScore(gameScore.playerTwo, gameScore.playerOne)
+    private fun updatePlayerOneScore(viewOut: Any?) = updateScore(gameScore.playerOne, gameScore.playerTwo)
+    private fun updatePlayerTwoScore(viewOut: Any?) = updateScore(gameScore.playerTwo, gameScore.playerOne)
 
-    private fun updateScore(player: Player, otherPlayer: Player) : GameScore{
+    private fun updateScore(player: Player, otherPlayer: Player) : GameScore {
         player.score = when (player.score){
             ZERO -> FIFTEEN
             FIFTEEN -> THIRTY

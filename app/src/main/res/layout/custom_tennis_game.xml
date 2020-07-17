@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
     <data>
-        <variable name="game" type="com.example.tennis.TennisViewModel"/>
+        <variable name="game" type="com.example.tennis.viewmodel.TennisViewModel"/>
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -32,52 +32,44 @@
             android:orientation="vertical"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent">
+
             <EditText
+                style="@style/gameTextStyle"
                 android:id="@+id/text_player_one"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_margin="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="30sp"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                android:fontFamily="sans-serif-medium"
                 android:layout_marginStart="10dp"
-                android:text="PlayerOne"/>
+                android:text="@string/player_one_text"/>
+
             <TextView
+                style="@style/gameTextStyle"
                 app:layout_constraintTop_toBottomOf="@id/text_player_one"
                 app:layout_constraintStart_toStartOf="@id/text_player_one"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="30sp"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                android:fontFamily="sans-serif-medium"
                 android:text="@{game.playerOneScore}"/>
+
             <EditText
+                style="@style/gameTextStyle"
                 android:id="@+id/text_player_two"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_margin="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="30sp"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                android:fontFamily="sans-serif-medium"
                 android:layout_marginStart="10dp"
                 android:gravity="bottom"
-                android:text="PlayerTwo"/>
+                android:text="@string/player_two_text"/>
+
             <TextView
+                style="@style/gameTextStyle"
                 app:layout_constraintBottom_toTopOf="@id/text_player_two"
                 app:layout_constraintEnd_toEndOf="@id/text_player_two"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="30sp"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                android:fontFamily="sans-serif-medium"
                 android:layout_marginStart="10dp"
                 android:text="@{game.playerTwoScore}"/>
         </androidx.constraintlayout.widget.ConstraintLayout>

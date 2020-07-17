@@ -1,4 +1,4 @@
-package com.example.tennis.viewmodel
+package com.example.tennis.library
 
 import androidx.databinding.Observable
 import androidx.databinding.Observable.OnPropertyChangedCallback
@@ -6,15 +6,14 @@ import androidx.databinding.PropertyChangeRegistry
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ViewModel
-import com.example.tennis.DEFAULT_ID
-import com.example.tennis.Event
+import com.example.tennis.library.Event.Companion.DEFAULT_ID
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 open class RxViewModel : ViewModel(), Observable{
     private val listOfEvents = mutableListOf<Pair<Event<*, *, *>,String>>()
     private val compositeDisposable = CompositeDisposable()
 
-    fun <VOut,DOut,POut>subscribe(event: Event<VOut,DOut,POut>, handler: (POut) -> Unit, id: String = DEFAULT_ID){
+    fun <VOut,DOut,POut>subscribe(event: Event<VOut, DOut, POut>, handler: (POut) -> Unit, id: String = DEFAULT_ID){
         val wrappedHandler : (input:POut) -> Unit = {input -> handler(input); notifyChange()}
         event.registerEvent(wrappedHandler,id)?.also{compositeDisposable.add(it)}
         listOfEvents.add(Pair(event, id))

@@ -1,6 +1,9 @@
-package com.example.tennis
+package com.example.tennis.viewmodel
 
-import com.example.tennis.viewmodel.RxViewModel
+import com.example.tennis.library.RxViewModel
+import com.example.tennis.event.playerOneScored
+import com.example.tennis.event.playerTwoScored
+import com.example.tennis.presenter.TennisPresenter.Companion.ZERO_DISPLAY
 
 class TennisViewModel : RxViewModel() {
     var playerOneScore = ZERO_DISPLAY
@@ -10,7 +13,7 @@ class TennisViewModel : RxViewModel() {
         subscribe(playerTwoScored, ::updateScores)
     }
 
-    fun updateScores(scores: Pair<String,String>){
+    private fun updateScores(scores: Pair<String,String>){
         playerOneScore = scores.first
         playerTwoScore = scores.second
     }

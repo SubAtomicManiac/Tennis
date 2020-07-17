@@ -1,4 +1,4 @@
-package com.example.tennis
+package com.example.tennis.library
 
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.subjects.PublishSubject
@@ -28,8 +28,9 @@ class Event<VOut,DOut,POut> private constructor(val eventName: String) {
     }
 
     companion object {
+        const val DEFAULT_ID = "default"
         private var eventName = 0
-        fun <VOut,DOut,POut>create() : Event<VOut,DOut,POut>{
+        fun <VOut,DOut,POut>create() : Event<VOut, DOut, POut> {
             return Event(eventName++.toString())
         }
     }
