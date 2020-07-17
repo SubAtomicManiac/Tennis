@@ -2,3 +2,9 @@
 2) Create UI DONE
 3) Hookup databinding DONE
 4) Hookup RxJava DONE
+
+Improvements
+Check if events are type safe
+Consolidate the event into a scoreboard class
+Make and Event constructor
+Make Event have V,D,P type parameters to make it clear what each component is doing

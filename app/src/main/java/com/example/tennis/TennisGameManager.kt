@@ -37,6 +37,7 @@ class TennisGameManager {
             ADVANTAGE -> WIN
             FORTY -> WIN
             WIN -> WIN
+            LOSE -> LOSE
         }
         return player.score.name
     }

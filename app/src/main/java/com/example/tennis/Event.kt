@@ -1,12 +1,11 @@
 package com.example.tennis
 
-import android.util.Log
-import com.example.tennis.Event.PlayerOneScored
 import com.example.tennis.EventStore.domainMap
 import com.example.tennis.EventStore.transitMap
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.subjects.PublishSubject
 
+@Suppress("UNCHECKED_CAST")
 sealed class Event<I,O> {
     class PlayerOneScored<I,O>: Event<I,O>()
     class PlayerTwoScored<I,O>: Event<I,O>()
