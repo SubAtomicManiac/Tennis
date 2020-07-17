@@ -23,6 +23,10 @@ class Event<VOut,DOut,POut> private constructor(val eventName: String) {
         domain = domainProcess
     }
 
+    fun setPresenter(presenterProcess: (DOut?) -> POut){
+        presenter = presenterProcess
+    }
+
     companion object {
         private var eventName = 0
         fun <VOut,DOut,POut>create() : Event<VOut,DOut,POut>{

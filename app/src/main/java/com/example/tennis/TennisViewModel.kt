@@ -3,12 +3,15 @@ package com.example.tennis
 import com.example.tennis.viewmodel.RxViewModel
 
 class TennisViewModel : RxViewModel() {
-    var playerOneScore = DEFAULT_SCORE
-    var playerTwoScore = DEFAULT_SCORE
+    var playerOneScore = ZERO_DISPLAY
+    var playerTwoScore = ZERO_DISPLAY
     init {
-        subscribe(playerOneScored, {score -> playerOneScore = score})
-        subscribe(playerTwoScored, {score -> playerTwoScore = score})
-        subscribe(playerOneToDeuce, {score -> playerOneScore = score})
-        subscribe(playerTwoToDeuce, {score -> playerTwoScore = score})
+        subscribe(playerOneScored, ::updateScores)
+        subscribe(playerTwoScored, ::updateScores)
+    }
+
+    fun updateScores(scores: Pair<String,String>){
+        playerOneScore = scores.first
+        playerTwoScore = scores.second
     }
 }

@@ -1,3 +1,3 @@
 package com.example.tennis
 
-data class Player(var score: Scores, var order: Int)
+data class Player(var score: Scores)

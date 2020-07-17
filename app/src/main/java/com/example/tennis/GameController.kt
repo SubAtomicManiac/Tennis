@@ -8,6 +8,7 @@ class GameController : BaseController(){
         playerTwoScored.publishEvent()
     }
     fun createGame(){
-        val tennisGame = TennisGameManager()
+        TennisGameManager()
+        TennisPresenter()
     }
 }

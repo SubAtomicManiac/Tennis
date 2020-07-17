@@ -3,43 +3,35 @@ package com.example.tennis
 import com.example.tennis.Scores.*
 
 enum class Scores {
-    ZERO,FIFTEEN,THIRTY,FORTY,DEUCE,ADVANTAGE,WIN,LOSE
+    ZERO,FIFTEEN,THIRTY,FORTY,ADVANTAGE,WIN,LOSE
 }
 
 class TennisGameManager {
-    private var playerOneScore = Player(ZERO, 0)
-    private var playerTwoScore = Player(ZERO, 1)
+    private val gameScore = GameScore(Player(ZERO),Player(ZERO))
 
     init {
         playerOneScored.setDomain(::updatePlayerOneScore)
         playerTwoScored.setDomain(::updatePlayerTwoScore)
-        playerOneToDeuce.setDomain(::easy)
-        playerTwoToDeuce.setDomain(::easy)
     }
 
-    private fun updatePlayerOneScore(any: Any?) = updatePlayerScore(playerOneScore,playerTwoScore)
-    private fun updatePlayerTwoScore(any: Any?) = updatePlayerScore(playerTwoScore,playerOneScore)
-    private fun easy(any: Any?) = DEUCE.name
-    private fun updatePlayerScore(player: Player, otherPlayer: Player) : String{
+    private fun updatePlayerOneScore(any: Any?) = updateScore(gameScore.playerOne, gameScore.playerTwo)
+    private fun updatePlayerTwoScore(any: Any?) = updateScore(gameScore.playerTwo, gameScore.playerOne)
+
+    private fun updateScore(player: Player, otherPlayer: Player) : GameScore{
         player.score = when (player.score){
             ZERO -> FIFTEEN
             FIFTEEN -> THIRTY
-            THIRTY -> if (otherPlayer.score == FORTY) {
-                if (player.order == 0) playerTwoToDeuce.publishEvent(null)
-                else playerOneToDeuce.publishEvent(null)
-                DEUCE.also { otherPlayer.score = DEUCE }
-            } else FORTY
-            DEUCE -> if (otherPlayer.score == ADVANTAGE) {
-                if (player.order == 0) playerTwoToDeuce.publishEvent(null)
-                else playerOneToDeuce.publishEvent(null)
-                DEUCE.also { otherPlayer.score = DEUCE }
-            } else ADVANTAGE
-            ADVANTAGE -> WIN
-            FORTY -> WIN
-            WIN -> WIN
-            LOSE -> LOSE
+            THIRTY -> FORTY
+            FORTY -> when (otherPlayer.score){
+                FORTY -> ADVANTAGE.also{otherPlayer.score = FORTY }
+                ADVANTAGE -> FORTY.also{otherPlayer.score = FORTY }
+                else -> WIN.also{otherPlayer.score = LOSE }
+            }
+            ADVANTAGE -> WIN.also{otherPlayer.score = LOSE }
+            WIN -> WIN.also{otherPlayer.score = LOSE }
+            LOSE -> LOSE.also{otherPlayer.score = WIN }
         }
-        return player.score.name
+        return gameScore
     }
 
 }
