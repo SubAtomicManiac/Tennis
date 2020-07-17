@@ -9,7 +9,10 @@ import androidx.lifecycle.ViewModel
 import com.example.tennis.library.Event.Companion.DEFAULT_ID
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 
-open class RxViewModel : ViewModel(), Observable{
+//[WIP] ViewModel that handles subscription and un-subscription
+//Achieves memory leak safety by using lifecycle events and disposables
+
+open class EventViewModel : ViewModel(), Observable{
     private val listOfEvents = mutableListOf<Pair<Event<*, *, *>,String>>()
     private val compositeDisposable = CompositeDisposable()
 

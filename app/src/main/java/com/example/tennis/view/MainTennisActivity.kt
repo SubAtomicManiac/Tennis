@@ -6,15 +6,14 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.tennis.library.controllers
 import com.example.tennis.R
 import com.example.tennis.viewmodel.TennisViewModel
-import com.example.tennis.controller.GameController
+import com.example.tennis.controller.TennisController
 import com.example.tennis.databinding.CustomTennisGameBinding
-import com.example.tennis.event.resetClick
 import kotlinx.android.synthetic.main.activity_main_tennis.*
 import kotlinx.android.synthetic.main.custom_tennis_game.*
 
 class MainTennisActivity : AppCompatActivity() {
     private val viewModel : TennisViewModel by viewModels()
-    private val controller : GameController by controllers()
+    private val controller : TennisController by controllers()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

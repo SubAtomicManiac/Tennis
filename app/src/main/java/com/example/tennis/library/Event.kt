@@ -3,6 +3,9 @@ package com.example.tennis.library
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.subjects.PublishSubject
 
+//[WIP] Event class responsible for publishing and subscribing using RXJava
+//Domain and presenter processes are synchronous but will be changed to be async
+
 @Suppress("UNCHECKED_CAST")
 class Event<VOut,DOut,POut> private constructor(val eventName: String) {
     private val subjects = mutableMapOf<String, PublishSubject<POut>?>()

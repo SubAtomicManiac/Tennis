@@ -1,21 +1,27 @@
 package com.example.tennis.presenter
 
+import androidx.annotation.VisibleForTesting
 import com.example.tennis.domain.entities.GameScore
 import com.example.tennis.domain.entities.Scores
 import com.example.tennis.domain.entities.Scores.*
-import com.example.tennis.event.playerOneScoredClick
-import com.example.tennis.event.playerTwoScoredClick
-import com.example.tennis.event.resetClick
+import com.example.tennis.event.*
 
 class TennisPresenter private constructor(){
 
     init {
-        playerOneScoredClick.setPresenter(::postGameScore)
-        playerTwoScoredClick.setPresenter(::postGameScore)
-        resetClick.setPresenter(::postGameScore)
+        setPresenter()
     }
 
-    private fun postGameScore(gameScore: GameScore?) = Pair(
+
+    //Sets the presenter for the event
+    private fun setPresenter(){
+        PlayerOneScoredClick.event.setPresenter(::postGameScore)
+        PlayerTwoScoredClick.event.setPresenter(::postGameScore)
+        ResetClick.event.setPresenter(::postGameScore)
+    }
+
+    @VisibleForTesting
+    fun postGameScore(gameScore: GameScore?) = Pair(
         scoresToDisplay(gameScore?.run{this.playerOne.score}),
         scoresToDisplay(gameScore?.run{this.playerTwo.score})
     )

@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelLazy
 import androidx.lifecycle.ViewModelProvider
 
+//[WIP] Property delegate for controller to imitate functionality of by viewModels [WIP]
+
 @MainThread
 inline fun <reified C : ViewModel> ComponentActivity.controllers(
     noinline factoryProducer: (() -> ViewModelProvider.Factory)? = null

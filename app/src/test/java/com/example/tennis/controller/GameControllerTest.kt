@@ -1,47 +1,50 @@
 package com.example.tennis.controller
 
-import com.example.tennis.library.Event
+import com.example.tennis.event.PlayerOneScoredClick
+import com.example.tennis.event.PlayerTwoScoredClick
+import com.example.tennis.event.ResetClick
+import com.example.tennis.presenter.TennisPresenter
+import com.example.tennis.unittests.EventUnitTest
 import io.mockk.*
-import io.mockk.impl.annotations.MockK
-import org.junit.After
 import org.junit.Test
 
-import org.junit.Assert.*
 import org.junit.Before
 
-class GameControllerTest {
+class GameControllerTest : EventUnitTest(){
 
-    lateinit var controller: GameController
-
-    @MockK
-    var playerOneScoredClickMock: Event<Any,Any,Any> = mockk()
+    private lateinit var controller: TennisController
 
     @Before
     fun setup(){
-        controller = GameController()
-    }
-
-    @After
-    fun tearDown() {
-        unmockkAll()
+        controller = TennisController()
     }
 
     @Test
     fun addPointForPlayerOne() {
-        every {playerOneScoredClickMock.publishEvent()} just Runs
+        mockPublishEvent(PlayerOneScoredClick.event)
         controller.addPointForPlayerOne()
-        verify{playerOneScoredClickMock.publishEvent()}
+        verify{PlayerOneScoredClick.event.publishEvent()}
     }
 
     @Test
     fun addPointForPlayerTwo() {
+        mockPublishEvent(PlayerTwoScoredClick.event)
+        controller.addPointForPlayerTwo()
+        verify{PlayerTwoScoredClick.event.publishEvent()}
     }
 
     @Test
     fun resetGame() {
+        mockPublishEvent(ResetClick.event)
+        controller.resetGame()
+        verify{ResetClick.event.publishEvent()}
     }
 
     @Test
     fun createGame() {
+        mockkObject(TennisPresenter)
+        every {TennisPresenter.create()} returns mockk()
+        controller.createGame()
+        verify{TennisPresenter.create()}
     }
 }

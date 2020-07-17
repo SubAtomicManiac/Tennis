@@ -1,24 +1,30 @@
 package com.example.tennis.domain
 
+import androidx.annotation.VisibleForTesting
 import com.example.tennis.domain.entities.GameScore
 import com.example.tennis.domain.entities.Player
 import com.example.tennis.domain.entities.Scores.*
-import com.example.tennis.event.playerOneScoredClick
-import com.example.tennis.event.playerTwoScoredClick
-import com.example.tennis.event.resetClick
+import com.example.tennis.event.*
 
 
 class TennisGame private constructor(){
-    private val gameScore = GameScore(Player(ZERO), Player(ZERO))
+    private val gameScore = GameScore()
 
     init {
-        playerOneScoredClick.setDomain(::updatePlayerOneScore)
-        playerTwoScoredClick.setDomain(::updatePlayerTwoScore)
-        resetClick.setDomain(::resetScore)
+        setDomain()
     }
 
-    private fun updatePlayerOneScore(viewOut: Any?) = updateScore(gameScore.playerOne, gameScore.playerTwo)
-    private fun updatePlayerTwoScore(viewOut: Any?) = updateScore(gameScore.playerTwo, gameScore.playerOne)
+    //Sets the domain for the event
+    private fun setDomain(){
+        PlayerOneScoredClick.event.setDomain(::updatePlayerOneScore)
+        PlayerTwoScoredClick.event.setDomain(::updatePlayerTwoScore)
+        ResetClick.event.setDomain(::resetScore)
+    }
+
+    @VisibleForTesting
+    fun updatePlayerOneScore(viewOut: Any? = null) = updateScore(gameScore.playerOne, gameScore.playerTwo)
+    @VisibleForTesting
+    fun updatePlayerTwoScore(viewOut: Any? = null) = updateScore(gameScore.playerTwo, gameScore.playerOne)
 
     private fun updateScore(player: Player, otherPlayer: Player) : GameScore {
         player.score = when (player.score){
@@ -37,7 +43,7 @@ class TennisGame private constructor(){
         return gameScore
     }
 
-    private fun resetScore(viewOut: Any?) = gameScore.apply{reset()}
+    private fun resetScore(viewOut: Any? = null) = gameScore.apply{reset()}
 
     companion object {
         fun create() = TennisGame()
