@@ -1,38 +1,34 @@
 package com.example.tennis
 
-import com.example.tennis.EventStore.domainMap
-import com.example.tennis.EventStore.transitMap
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.subjects.PublishSubject
 
 @Suppress("UNCHECKED_CAST")
-sealed class Event<I,O> {
-    class PlayerOneScored<I,O>: Event<I,O>()
-    class PlayerTwoScored<I,O>: Event<I,O>()
-    class PlayerOneToDeuce<I,O>: Event<I,O>()
-    class PlayerTwoToDeuce<I,O>: Event<I,O>()
-    fun publishEvent(value: I? =  null, id: String = DEFAULT_ID){
-        val eventName = this.javaClass.simpleName
-        val domainValue = domainMap[eventName]?.run{(this as (I?) -> Any).invoke(value)}
-        transitMap[eventName+id]?.also{it.onNext(domainValue)}
+class Event<VOut,DOut,POut> private constructor(val eventName: String) {
+    private val subjects = mutableMapOf<String, PublishSubject<POut>?>()
+    private var domain : ((VOut?) -> DOut) = {input -> input as DOut}
+    private var presenter : ((DOut?) -> POut) = {input -> input as POut}
+
+    fun publishEvent(value: VOut? =  null, id: String = DEFAULT_ID){
+        subjects[eventName+id]?.also{it.onNext(presenter(domain(value)))}
     }
-    fun registerEvent(handler: (O) -> Unit, id: String = DEFAULT_ID) : Disposable?{
-        val eventName = this.javaClass.simpleName
-        if (transitMap[eventName+id] == null) {
-            transitMap[eventName+id] = PublishSubject.create<Any>()
-        }
-        val wrapperHandler = {any: Any -> handler.invoke(any as O)}
-        return transitMap[eventName+id]?.subscribe(wrapperHandler)
+    fun registerEvent(handler: (POut) -> Unit, id: String = DEFAULT_ID) : Disposable?{
+        if (subjects[eventName+id] == null) subjects[eventName+id] = PublishSubject.create<POut>()
+        return subjects[eventName+id]?.subscribe(handler)
     }
     fun unregisterEvent(id: String = DEFAULT_ID){
-        val eventName = this.javaClass.simpleName
-        transitMap[eventName+id]?.also{
-            if (it.hasObservers()){ transitMap[eventName+id] = null }
+        subjects[eventName+id]?.also{ if (it.hasObservers()){ subjects[eventName+id] = null }}
+    }
+    fun setDomain(domainProcess: (VOut?) -> DOut){
+        domain = domainProcess
+    }
+
+    companion object {
+        private var eventName = 0
+        fun <VOut,DOut,POut>create() : Event<VOut,DOut,POut>{
+            return Event(eventName++.toString())
         }
     }
-    fun setDomain(domainProcess: (Any) -> O){
-        val eventName = this.javaClass.simpleName
-        domainMap[eventName] = domainProcess
-    }
+
 }
 

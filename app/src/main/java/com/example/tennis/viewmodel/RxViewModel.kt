@@ -1,6 +1,5 @@
 package com.example.tennis.viewmodel
 
-import androidx.databinding.Bindable
 import androidx.databinding.Observable
 import androidx.databinding.Observable.OnPropertyChangedCallback
 import androidx.databinding.PropertyChangeRegistry
@@ -12,17 +11,18 @@ import com.example.tennis.Event
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 open class RxViewModel : ViewModel(), Observable{
-    private val listOfEvents = mutableListOf<Pair<Event<Any,Any>,String>>()
+    private val listOfEvents = mutableListOf<Pair<Event<*, *, *>,String>>()
     private val compositeDisposable = CompositeDisposable()
 
-    fun <O>subscribe(event: Event<Any?,O>, handler: (O) -> Unit, id: String = DEFAULT_ID){
-        val wrappedHandler = {input : O -> handler(input).also{notifyChange()}}
+    fun <VOut,DOut,POut>subscribe(event: Event<VOut,DOut,POut>, handler: (POut) -> Unit, id: String = DEFAULT_ID){
+        val wrappedHandler : (input:POut) -> Unit = {input -> handler(input); notifyChange()}
         event.registerEvent(wrappedHandler,id)?.also{compositeDisposable.add(it)}
+        listOfEvents.add(Pair(event, id))
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     fun unsubscribe(){
-        listOfEvents.forEach { it.first.unregisterEvent(it.javaClass.simpleName+it.second) }
+        listOfEvents.forEach { it.first.unregisterEvent(it.first.eventName + it.second) }
         compositeDisposable.dispose()
     }
 
@@ -47,10 +47,7 @@ open class RxViewModel : ViewModel(), Observable{
         mCallbacks!!.remove(callback)
     }
 
-    /**
-     * Notifies listeners that all properties of this instance have changed.
-     */
-    fun notifyChange() {
+    private fun notifyChange() {
         synchronized(this) {
             if (mCallbacks == null) {
                 return
@@ -58,21 +55,4 @@ open class RxViewModel : ViewModel(), Observable{
         }
         mCallbacks!!.notifyCallbacks(this, 0, null)
     }
-
-    /**
-     * Notifies listeners that a specific property has changed. The getter for the property
-     * that changes should be marked with [Bindable] to generate a field in
-     * `BR` to be used as `fieldId`.
-     *
-     * @param fieldId The generated BR id for the Bindable field.
-     */
-    fun notifyPropertyChanged(fieldId: Int) {
-        synchronized(this) {
-            if (mCallbacks == null) {
-                return
-            }
-        }
-        mCallbacks!!.notifyCallbacks(this, fieldId, null)
-    }
-
 }

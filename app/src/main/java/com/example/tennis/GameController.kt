@@ -2,10 +2,10 @@ package com.example.tennis
 
 class GameController : BaseController(){
     fun addPointForPlayerOne(){
-        playerOneScored.publishEvent(null)
+        playerOneScored.publishEvent()
     }
     fun addPointForPlayerTwo(){
-        playerTwoScored.publishEvent(null)
+        playerTwoScored.publishEvent()
     }
     fun createGame(){
         val tennisGame = TennisGameManager()

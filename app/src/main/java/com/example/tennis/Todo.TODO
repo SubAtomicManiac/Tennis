@@ -4,7 +4,8 @@
 4) Hookup RxJava DONE
 
 Improvements
-Check if events are type safe
+Check if events are type safe DONE
 Consolidate the event into a scoreboard class
-Make and Event constructor
-Make Event have V,D,P type parameters to make it clear what each component is doing
+Make and Event constructor DONE
+Make Event have V,D,P type parameters to make it clear what each component is doing DONE
+
